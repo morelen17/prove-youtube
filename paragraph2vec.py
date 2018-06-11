@@ -11,6 +11,9 @@ from nltk.corpus import stopwords
 from six.moves import cPickle as pickle
 
 
+EMBEDDING_SIZE = 50
+
+
 class Paragraph2Vec:
     """
     Shape of word matrix W is (self._vocabulary_size x self._embedding_size)
@@ -20,7 +23,7 @@ class Paragraph2Vec:
 
     def __init__(self, is_training: bool = True):
         self._is_training = is_training
-        self._embedding_size = 50
+        self._embedding_size = EMBEDDING_SIZE
         self._window_size = 8
         self._vocabulary_size = 49999
         self._unk_id = 50000  # ID of UNK word token, for padding
@@ -40,6 +43,9 @@ class Paragraph2Vec:
         self.loss_op, self.train_op = None, None
         self.paragraph_matrix, self.word_matrix = None, None
         pass
+
+    def get_word2id_dict(self) -> dict:
+        return self._word_to_id
 
     def build_vocab(self, paragraph_list: list):
         paragraph_list = list(map(lambda x: x.lower().split(' '), paragraph_list))
